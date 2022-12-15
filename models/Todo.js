@@ -13,8 +13,4 @@ const Todo = ({
   })
 }
 
-Todo.of = (object) => {
-  return Todo(object);
-}
-
 export default Todo;

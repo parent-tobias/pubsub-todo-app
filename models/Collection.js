@@ -60,18 +60,4 @@ const Collection = ({_id=createUUID(), title='Default Collection'}) => {
   })
 }
 
-Collection.of = (factory) => (object) => {
-  const main = Collection({_id: object._id || undefined, title: object.title});
-  object.collection?.forEach( item => {
-    console.log(`Creating ${factory.isA}`, item)
-    let creator = factory.of(item.data);
-    let subcontainer;
-    if(item.collection){
-      subcontainer = creator(item.collection)
-    }
-    main.add(subcontainer);
-  })
-  return main
-}
-
 export default Collection;
