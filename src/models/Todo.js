@@ -6,7 +6,7 @@ const Todo = ({
 }) => {
   return Object.freeze({
     get title(){ return title; },
-    get descripton(){ return description; },
+    get description(){ return description; },
     get created(){ return created; },
     get due(){ return due; },
     isA: 'Todo'

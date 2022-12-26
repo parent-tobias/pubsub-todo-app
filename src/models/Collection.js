@@ -15,9 +15,9 @@ const Collection = ({_id=createUUID(), title='Default Collection'}) => {
 
   let stuff = [];
 
-  const add = (item) => {
+  const add = (item, id=createUUID()) => {
     const thing = {
-      _id: createUUID(),
+      _id: id,
       data: item
     }
     stuff = [...stuff, thing];

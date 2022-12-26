@@ -1,71 +1,35 @@
 import './style.css'
-import Collection from './models/Collection';
-import Todo from './models/Todo';
+import toHtml from './src/util/toHtml';
 
-const appStoreKey = 'Todo-app-project';
+import myTodoAppManager, { Collection, Todo } from './src/components/myTodoAppManager';
 
-const loadFunc = (key)=>{
-  return JSON.parse(localStorage.getItem(key));
+import Layout from './src/templates/layout';
+import ProjectsList from './src/templates/projectsList';
+import ProjectDetails from './src/templates/projectDetails';
+
+const handleSelectProject = (e)=>{
+  const id = e.target.closest(".project").dataset.id;
+  const content = Layout.el.querySelector('.content-pane');
+  while(content.firstChild) content.firstChild.remove();
+
+  content.append(ProjectDetails(myTodoAppManager.byId(id)))
 }
-const addFunc = async ( thing, collection ) => {
-  localStorage.setItem(collection._id, JSON.stringify(collection));
-
-}
-const updateFunc = ( thing, collection ) => {
-  localStorage.setItem(collection._id, JSON.stringify(collection));
-  console.log(`Updated ${JSON.stringify(thing)} in collection ${collection.title}, and saved!`)
-}
-const removeFunc = ( id, collection ) => {
-  localStorage.setItem(collection._id, JSON.stringify(collection));
-  console.log(`Removed item ${id} from collection ${collection.title}, and saved!`)
+const handleAddProject = (title)=>{
+  myTodoAppManager.add({title})
+  displayProjects();
 }
 
-// This is solely for the purpose of being able to manipulate the Todo App Manager
-//  from the console. Remove 'em in production!
-window.myTodoAppManager = undefined;
-window.Collection = Collection;
-window.Todo = Todo;
+const displayProjects = ()=>{
+  const sidebar = Layout.el.querySelector(".sidebar");
+  while(sidebar.firstChild) sidebar.firstChild.remove();
+  sidebar.append(ProjectsList({
+    collection: myTodoAppManager.findAll(),
+    selectProject: handleSelectProject,
+    addProject: handleAddProject
+  }))  
+}
+document.querySelector('#app').append(Layout.el);
 
-(()=>{
-  const store = loadFunc(appStoreKey);
+Layout.el.querySelector("h1.title").textContent = myTodoAppManager.title;
+displayProjects();
 
-  if(store){
-    const {_id, title, collection=[] } = store;
-    myTodoAppManager = Collection({_id, title});
-    collection.forEach( ({data}) => {
-      const project = Collection({_id: data.id, title: data.title});
-      data.collection?.forEach( todoObj => {
-        const todo = Todo(todoObj);
-        project.add(todo.data);
-      })
-      myTodoAppManager.add(project);
-    })
-  } else {
-    myTodoAppManager = Collection({title:'My Todo App', _id: 'Todo-app-project'});
-
-    const projects = [
-      Collection({title:'Personal tasks'}),
-      Collection({title: 'Work projects : team'}),
-      Collection({title: 'Work projects : solo'}),
-      Collection({title: 'Family tasks'})
-    ]
-
-    projects.forEach( project => {
-      myTodoAppManager.add(project);
-    })
-  }
-
-  myTodoAppManager.subscribe('add', addFunc);
-  myTodoAppManager.subscribe('update', updateFunc);
-  myTodoAppManager.subscribe('remove', removeFunc)
-
-  myTodoAppManager.findAll().forEach( ({_id, data}) => {
-    if(data.isA==='Collection'){
-      const triggerManager = ()=>myTodoAppManager.update(_id, (data)=>data)
-      data.subscribe('add', triggerManager);
-      data.subscribe('update', triggerManager);
-      data.subscribe('remove', triggerManager);
-    }
-  })
-
-})()
