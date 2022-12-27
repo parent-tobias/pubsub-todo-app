@@ -68,10 +68,6 @@ let myTodoAppManager;
     }
   })
 })()
-window.myTodoAppManager = myTodoAppManager;
-window.Todo = Todo;
-window.Collection = Collection;
-
 
 export default myTodoAppManager;
 export { Collection, Todo };

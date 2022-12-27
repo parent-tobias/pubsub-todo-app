@@ -5,7 +5,7 @@ const ProjectsList = ({collection, selectProject, addProject}) => {
 <ul></ul>
 <footer>
   <span class='tooltip tooltip-right' data-tooltip='Add Project'>
-  <label class="add-project btn-rounded btn btn-primary" for="modal1"></label>
+  <label class="add-project btn-rounded btn btn-primary" for="modal1"><i class='bi-journal-plus'></i></label>
   <input class="modal-state" id="modal1" type="checkbox" />
   <div class="modal">
     <label class="modal-overlay" for="modal1"></label>
@@ -32,7 +32,9 @@ const clearAndClose = ()=>{
   el.querySelector('.modal-state').checked=false;
 
 }
-  el.querySelector('ul').addEventListener('click', selectProject);
+  el.querySelector('ul').addEventListener('click', (e)=> 
+    selectProject(e.target.closest(".project").dataset.id)
+  );
   el.querySelector('[name="new-project-form"]').addEventListener('submit', (e)=>{
     addProject(el.querySelector('#new-project-title').value);
     clearAndClose();
