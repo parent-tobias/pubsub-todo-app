@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   server: {
-    base: './',
+    base: "/pubsub-todo-app/",
     port: 3210
   },
 })
