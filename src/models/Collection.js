@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import createUUID from "../util/createUUID";
 
 const Collection = ({_id=createUUID(), title='Default Collection'}) => {
@@ -47,6 +48,7 @@ const Collection = ({_id=createUUID(), title='Default Collection'}) => {
   return Object.freeze({
     get _id(){ return _id; },
     get title(){ return title; },
+    set title(val){ title = val; },
     get collection(){ return stuff.length ? [...stuff] : undefined },
     isA: 'Collection',
     add,

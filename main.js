@@ -11,12 +11,21 @@ import ProjectDetails from './src/templates/projectDetails';
 const handleAddProject = (title)=>{
   myTodoAppManager.add({title})
 }
+const handleRemoveProject = (projectId)=>{
+  myTodoAppManager.remove(projectId);
+}
+const handleUpdateProject = (projectId, updateFn)=>{
+  myTodoAppManager.update(projectId, updateFn);
+}
 
 const handleAddTodo = (projectId, todoObj)=>{
   myTodoAppManager.byId(projectId).data.add(Todo(todoObj))
 }
 const handleRemoveTodo = (projectId, todoId) =>{
   myTodoAppManager.byId(projectId).data.remove(todoId);
+}
+const handleUpdateTodo = (projectId, todoId, data) => {
+  myTodoAppManager.byId(projectId).data.update(todoId, ()=>Todo(data));
 }
 
 const handleSelectProject = (projectId)=>{
@@ -26,7 +35,8 @@ const handleSelectProject = (projectId)=>{
   content.append(ProjectDetails({
     project: myTodoAppManager.byId(projectId),
     addTodo: handleAddTodo,
-    removeTodo: handleRemoveTodo
+    removeTodo: handleRemoveTodo,
+    updateTodo: handleUpdateTodo
   }))
 }
 
@@ -37,6 +47,8 @@ const displayProjects = ()=>{
     collection: myTodoAppManager.findAll(),
     selectProject: handleSelectProject,
     addProject: handleAddProject,
+    removeProject: handleRemoveProject,
+    updateProject: handleUpdateProject
   }))  
 }
 document.querySelector('#app').append(Layout.el);
@@ -46,5 +58,5 @@ displayProjects();
 
 myTodoAppManager.subscribe("add", displayProjects )
 myTodoAppManager.subscribe("update", displayProjects )
-myTodoAppManager.subscribe("delete", displayProjects )
+myTodoAppManager.subscribe("remove", displayProjects )
 
