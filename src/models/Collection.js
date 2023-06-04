@@ -29,7 +29,7 @@ const Collection = ({_id=createUUID(), title='Default Collection'}) => {
   }
   const byId = (id) => stuff.find(thing => thing._id === id)
   const find = (func) => stuff.find((thing)=>func(thing.data));
-  const findAll = () => [...stuff];
+  const findAll = (func = ()=>(true)) => stuff.filter(func);
   const remove = (itemId) => {
     stuff = stuff.filter(thing => thing._id !== itemId);
     listeners.remove?.forEach(
