@@ -51,7 +51,7 @@ const clearAndClose = ()=>{
       selectProject(e.target.closest(".project").dataset.id)
     }
   });
-  el.querySelector('[name="new-project-form"]').addEventListener('submit', (e)=>{
+  el.querySelector('[name="new-project-form"]').addEventListener('submit', ( )=>{
     addProject(el.querySelector('#new-project-title').value);
     clearAndClose();
   });

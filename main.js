@@ -1,7 +1,6 @@
-import './style.css'
-import toHtml from './src/util/toHtml';
+import './style.css';
 
-import myTodoAppManager, { Collection, Todo } from './src/components/myTodoAppManager';
+import myTodoAppManager, { Todo } from './src/components/myTodoAppManager';
 
 import Layout from './src/templates/layout';
 import ProjectsList from './src/templates/projectsList';
@@ -9,7 +8,7 @@ import ProjectDetails from './src/templates/projectDetails';
 
 
 const handleAddProject = (title)=>{
-  myTodoAppManager.add({title})
+  myTodoAppManager.add({title});
 }
 const handleRemoveProject = (projectId)=>{
   myTodoAppManager.remove(projectId);
@@ -19,7 +18,7 @@ const handleUpdateProject = (projectId, updateFn)=>{
 }
 
 const handleAddTodo = (projectId, todoObj)=>{
-  myTodoAppManager.byId(projectId).data.add(Todo(todoObj))
+  myTodoAppManager.byId(projectId).data.add(Todo(todoObj));
 }
 const handleRemoveTodo = (projectId, todoId) =>{
   myTodoAppManager.byId(projectId).data.remove(todoId);
@@ -37,7 +36,7 @@ const handleSelectProject = (projectId)=>{
     addTodo: handleAddTodo,
     removeTodo: handleRemoveTodo,
     updateTodo: handleUpdateTodo
-  }))
+  }));
 }
 
 const displayProjects = ()=>{
@@ -49,14 +48,13 @@ const displayProjects = ()=>{
     addProject: handleAddProject,
     removeProject: handleRemoveProject,
     updateProject: handleUpdateProject
-  }))  
+  }));
 }
 document.querySelector('#app').append(Layout.el);
 
 Layout.el.querySelector("h1.title").textContent = myTodoAppManager.title;
 displayProjects();
 
-myTodoAppManager.subscribe("add", displayProjects )
-myTodoAppManager.subscribe("update", displayProjects )
-myTodoAppManager.subscribe("remove", displayProjects )
-
+myTodoAppManager.subscribe("add", displayProjects );
+myTodoAppManager.subscribe("update", displayProjects );
+myTodoAppManager.subscribe("remove", displayProjects );

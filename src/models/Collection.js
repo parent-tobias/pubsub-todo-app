@@ -1,4 +1,3 @@
-import { data } from "autoprefixer";
 import createUUID from "../util/createUUID";
 
 const Collection = ({_id=createUUID(), title='Default Collection'}) => {
